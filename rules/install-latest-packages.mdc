@@ -1,0 +1,58 @@
+---
+description: Always install the latest version of packages — never guess or hardcode versions
+alwaysApply: true
+---
+
+# Always Install Latest Package Versions
+
+When adding a new dependency, **never hardcode or guess a version number**.
+Always determine the actual latest version first.
+
+## Required Workflow
+
+### Option A: Let the package manager resolve it (preferred)
+
+```bash
+# pnpm
+pnpm add <package-name>
+
+# npm
+npm install <package-name>
+
+# yarn
+yarn add <package-name>
+```
+
+These resolve to the latest published version automatically.
+
+### Option B: Look up the version explicitly
+
+```bash
+# pnpm
+pnpm info <package-name> version
+
+# npm
+npm view <package-name> version
+```
+
+Then add the resolved version to the project's dependency file.
+
+## NEVER Do This
+
+```jsonc
+// BAD: Made-up or outdated version
+"some-package": "^1.0.0"
+```
+
+## Always Do This
+
+```bash
+# Verify the real latest version first
+pnpm info some-package version
+# Output: 4.12.3
+```
+
+```jsonc
+// GOOD: Verified latest version
+"some-package": "^4.12.3"
+```

@@ -1,0 +1,55 @@
+---
+description: Use the gh CLI for all GitHub operations (PRs, issues, releases, API, Actions)
+alwaysApply: true
+---
+
+# GitHub CLI (`gh`)
+
+Use `gh` instead of raw `curl`/API calls or the GitHub web UI for all GitHub operations.
+
+## Sandbox Permissions
+
+`gh` commands require network access. Always use `required_permissions: ["full_network"]` in Shell tool calls.
+
+## Key Commands
+
+| Task | Command |
+|------|---------|
+| Create PR | `gh pr create --title "..." --body "..."` |
+| View PR | `gh pr view <number>` |
+| List PRs | `gh pr list` |
+| PR checks | `gh pr checks <number>` |
+| Merge PR | `gh pr merge <number>` |
+| Create issue | `gh issue create --title "..." --body "..."` |
+| List issues | `gh issue list` |
+| Workflow runs | `gh run list`, `gh run view <id>` |
+| Releases | `gh release create <tag>`, `gh release list` |
+| Arbitrary API | `gh api <endpoint>` |
+| Cross-repo | Add `-R OWNER/REPO` to any command |
+
+## Read vs Write Operations
+
+Read-only commands do **not** require user approval — just run them. These include
+any command that only fetches or displays data:
+
+- `gh pr list`, `gh pr view`, `gh pr checks`, `gh pr diff`
+- `gh issue list`, `gh issue view`
+- `gh run list`, `gh run view`
+- `gh release list`, `gh release view`
+- `gh search issues/prs/code/repos`
+- `gh api` GET requests (the default method)
+
+Write commands **do** require explicit user approval before executing:
+
+- `gh pr create`, `gh pr merge`, `gh pr review`, `gh pr close`
+- `gh issue create`, `gh issue close`, `gh issue comment`
+- `gh run rerun`
+- `gh release create`, `gh release upload`, `gh release delete`
+- `gh api` with `-X POST`, `-X PATCH`, `-X PUT`, `-X DELETE`, or `-f`/`--input`
+
+## Conventions
+
+- Pass long bodies via HEREDOC: `--body "$(cat <<'EOF' ... EOF)"`
+- Use `--jq` or `--template` to extract specific fields from output
+- Use `gh api` with `{owner}` and `{repo}` placeholders for the current repo
+- For detailed patterns and examples, read the `gh-cli` skill

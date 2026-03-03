@@ -1,0 +1,80 @@
+---
+description: Follow markdownlint rules when writing or editing Markdown files
+globs: "**/*.md,**/*.mdc,**/*.mdx"
+alwaysApply: false
+---
+
+# Markdownlint Compliance
+
+When creating or editing Markdown files (`.md`, `.mdc`, `.mdx`), follow the markdownlint
+default rules unless a workspace `.markdownlint.json` / `.markdownlint.jsonc` /
+`.markdownlint.yaml` overrides them.
+
+## Before Writing Markdown
+
+Check for a workspace config:
+
+- `.markdownlint.json` or `.markdownlint.jsonc` in the workspace root
+- `markdownlint.config` in `.vscode/settings.json`
+
+If one exists, follow its overrides. If not, use defaults.
+
+## Rules the AI Commonly Violates
+
+| Rule  | What                     | Fix                              |
+| ----- | ------------------------ | -------------------------------- |
+| MD031 | Fences need blank lines  | Blank line above/below fences    |
+| MD032 | Lists need blank lines   | Blank line above/below lists     |
+| MD040 | Fences need language tag | Add `bash`, `json`, etc.         |
+| MD034 | No bare URLs in prose    | Wrap in `<url>` or `[text](url)` |
+
+## Quick Reference
+
+````markdown
+<!-- ✅ GOOD: blank lines around fences and lists -->
+Some text.
+
+- Item one
+- Item two
+
+More text.
+
+```bash
+echo "has a language tag"
+```
+
+<!-- ❌ BAD: missing blank lines, no language tag -->
+Some text.
+- Item one
+- Item two
+More text.
+```
+echo "no language tag"
+```
+````
+
+## Auto-Fix
+
+Most whitespace-related violations can be fixed automatically:
+
+```bash
+npx markdownlint-cli2 "path/to/file.md" --fix
+```
+
+Auto-fixable rules: MD009, MD010, MD012, MD022, MD023, MD027, MD030, MD031,
+MD032, MD047.
+
+**Not** auto-fixable (must fix manually): MD013 (line length), MD036 (emphasis
+as heading), MD040 (code fence language), MD034 (bare URLs).
+
+For bulk fixes across a directory:
+
+```bash
+npx markdownlint-cli2 "docs/**/*.md" --fix
+```
+
+## After Editing Markdown
+
+1. Run auto-fix: `npx markdownlint-cli2 "path/to/file.md" --fix`
+2. Run `ReadLints` on the file to catch remaining violations
+3. Manually fix anything `--fix` couldn't resolve

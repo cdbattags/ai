@@ -1,0 +1,76 @@
+---
+description: Always ask user to confirm before creating git commits
+alwaysApply: true
+---
+
+# Git Commit Confirmation
+
+## ABSOLUTE RULE — NO EXCEPTIONS
+
+**NEVER run `git commit` without explicit user approval.**
+
+**STOP. ASK. WAIT. Only commit after the user says "yes" or "commit".**
+
+## Mandatory Workflow
+
+When changes are ready to commit:
+
+1. **Make the changes** — edit, create, or delete files as requested
+2. **Show what changed** — optionally show `git status` and `git diff`
+3. **Draft commit message** — prepare a clear, descriptive commit message
+4. **STOP** — do NOT proceed without user approval
+5. **Ask explicitly** — "Ready to commit these changes?"
+6. **Wait for response** — do not assume, do not proceed
+7. **Only after "yes"** — user must say "yes", "commit", "go ahead", etc.
+8. **Then and only then commit**
+
+## Pattern to Follow
+
+End your response with:
+
+```text
+I've made the following changes:
+- [list changes]
+
+Proposed commit message:
+---
+[commit message]
+---
+
+Ready to commit these changes?
+```
+
+Then stop. Wait. Do not commit until user responds.
+
+## When NOT to Commit
+
+Do not commit if the user:
+
+- Just asked to "fix" or "change" something
+- Reported an error or issue
+- Has not explicitly said "commit" or "yes, commit"
+
+## When TO Commit
+
+Only commit if the user explicitly:
+
+- Says "commit this"
+- Says "yes" to a commit confirmation prompt
+- Asks to "commit the changes"
+- Says "create a commit with message X"
+
+## No Exceptions
+
+Do NOT commit even if:
+
+- The change is small or trivial
+- The user approved previous commits in this conversation
+- You think the user "obviously" wants it committed
+- The changes are "ready" or it's the end of a task
+
+**Every single commit requires explicit approval for that specific commit.**
+
+## Applies To
+
+All git commit operations: `git commit`, `git commit -m`,
+`git commit --amend`, `git commit -a`.

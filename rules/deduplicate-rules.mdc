@@ -1,0 +1,37 @@
+---
+description: When creating a user-level rule, check for overlapping project-level rules and offer to remove them.
+alwaysApply: true
+---
+
+# Deduplicate User vs Project Rules
+
+When creating or modifying a **user-level rule** (`~/.cursor/rules/*.mdc`), always check for overlapping **project-level rules** (`.cursor/rules/*.mdc` in the workspace).
+
+## Workflow
+
+1. **Before writing a user-level rule**, scan the current workspace's `.cursor/rules/` for rules covering the same topic.
+2. **If overlap is found**, warn the user:
+   - Name the overlapping project-level rule file
+   - Explain what it covers vs what the new user-level rule covers
+   - Ask whether to delete the project-level rule
+3. **If the user confirms**, delete the project-level rule.
+4. **If the user declines**, leave both but note the overlap in the user-level rule with a comment.
+
+## What Counts as Overlap
+
+- Same topic (e.g., both about "no sleep commands")
+- Subset coverage (project rule is a subset of the broader user rule)
+- Conflicting guidance (project rule says X, user rule says Y)
+
+## Example
+
+```
+Creating user rule: ~/.cursor/rules/no-sleep-process-monitoring.mdc
+
+Found overlapping project rule:
+  .cursor/rules/no-sleep-commands.mdc
+  (covers the same topic: avoiding sleep in shell commands)
+
+The user-level rule supersedes the project-level one.
+Delete .cursor/rules/no-sleep-commands.mdc? [ask user]
+```

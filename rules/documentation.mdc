@@ -1,0 +1,52 @@
+---
+description: Markdown file organization — README.md at roots only, all other docs in docs/ folders
+alwaysApply: true
+---
+
+# Documentation Guidelines
+
+## Markdown File Organization (STRICT RULE)
+
+### README.md — Only at Root Levels
+
+Allowed locations:
+
+- **Workspace root**: `./README.md`
+- **Module/package roots**: `./modules/*/README.md`, `./packages/*/README.md`
+- **Infra root**: `./infra/README.md`
+
+Forbidden locations (no READMEs in subdirectories):
+
+- `./docs/README.md`, `./src/README.md`, `./scripts/README.md`
+- `./modules/my-module/src/README.md`
+
+### All Other .md Files — Must Go in docs/ Folders
+
+- **Workspace docs**: `./docs/*.md`
+- **Module docs**: `./modules/*/docs/*.md`
+- **Infra docs**: `./infra/docs/*.md`
+
+### README.md Must Reference docs/
+
+Every `README.md` should have a Documentation section linking to its `docs/` folder.
+
+## When to Create Documentation
+
+**Do NOT create documentation files unless:**
+
+1. **Explicitly requested** — user asks for a summary, guide, or docs
+2. **Very complex changes** — spanning 10+ files or multiple systems
+3. **Architecture decisions** — major changes needing rationale captured
+
+Default: focus on implementation, let git history document the trail.
+
+## Quick Decision Tree
+
+```text
+Creating a .md file?
+├─ Named README.md?
+│  ├─ At workspace/module/infra root? → OK
+│  └─ Elsewhere? → FORBIDDEN
+└─ Not README.md?
+   └─ Must go in a docs/ folder
+```

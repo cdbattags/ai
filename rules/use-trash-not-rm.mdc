@@ -1,0 +1,31 @@
+---
+description: Use trash (del) instead of rm for file deletion on this machine
+alwaysApply: true
+---
+
+# Use `trash` Instead of `rm`
+
+This machine has `rm` aliased to a warning in `.zshrc`:
+
+```bash
+alias rm="echo Use 'del', or the full path i.e. '/bin/rm'"
+```
+
+The Cursor Shell tool runs non-interactive (aliases don't load), so use the
+binary directly.
+
+## What to Use
+
+| Action | Command |
+|--------|---------|
+| Delete files (recoverable) | `/opt/homebrew/bin/trash <file>` |
+| Delete directories (recoverable) | `/opt/homebrew/bin/trash <dir>` |
+| Permanent delete (only when necessary) | `/bin/rm` or `/bin/rm -rf` |
+
+## Rules
+
+- **Default to `trash`** — files go to macOS Trash and can be recovered
+- **Only use `/bin/rm`** when deleting generated/temporary files (node_modules,
+  .output, build caches) where recovery is not needed
+- **Never use bare `rm`** — it will fail in interactive shells due to the alias
+- On remote servers (SSH), `trash` is not available — use `/bin/rm` there

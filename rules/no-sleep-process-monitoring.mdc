@@ -1,0 +1,31 @@
+---
+description: Never use sleep, for loops, or polling patterns to wait for commands. Use Shell tool's block_until_ms and terminal file reading instead.
+alwaysApply: true
+---
+
+# No Sleep Commands - Use Shell Tool's Built-In Waiting
+
+**ABSOLUTE RULE: Never use `sleep`, polling loops (`while ! curl; do sleep; done`), or `for` loops with delays in the Cursor Shell tool.**
+
+The Shell tool already has `block_until_ms` for waiting and terminal files for monitoring. You never need to build your own waiting logic.
+
+## Quick Reference
+
+| Scenario | Pattern |
+|----------|---------|
+| Terminating command (build, seed, test) | Set `block_until_ms` > expected runtime |
+| Dev server / watcher | `block_until_ms: 0`, then Read terminal file for readiness |
+| Check if background command finished | Read terminal file, look for `exit_code` footer |
+| Verify server is up | Read terminal file for "ready in" / "listening" marker |
+
+## Before Using `sleep` — STOP
+
+If you are about to type `sleep` in a shell command, **do not**. Instead:
+
+1. For commands that finish: increase `block_until_ms`
+2. For servers: read the terminal file for output markers
+3. For checking process state: read the terminal file header for `running_for_seconds` or `exit_code`
+
+## Detailed Skill
+
+For full patterns and examples, read: `~/.cursor/skills/process-monitoring/SKILL.md`

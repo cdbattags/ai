@@ -1,0 +1,67 @@
+# Cursor Sandbox Network Allowlist
+
+**CRITICAL**: Every Cursor workspace should have a `sandbox-domains.txt` file at the workspace root with an allowlist of network domains for sandbox commands.
+
+## What It Does
+
+When you run shell commands in Cursor, they run in a sandbox with restricted network access. The `sandbox-domains.txt` file tells Cursor which domains to allow through the sandbox firewall.
+
+Without this file, commands that need network access (like `pnpm install`, `git clone`, API calls, etc.) will fail with network errors.
+
+## Required File Location
+
+```
+<workspace-root>/sandbox-domains.txt
+```
+
+## Standard Allowlist for Development Projects
+
+Create the file with this baseline (adjust based on your project's needs):
+
+```
+api.github.com, github.com, uploads.github.com, objects.githubusercontent.com, raw.githubusercontent.com, gist.githubusercontent.com, api.digitalocean.com, api.pulumi.com, luarocks.org, api.spotify.com, ws.audioscrobbler.com, pypi.org, files.pythonhosted.org, crates.io
+```
+
+## Common Additions by Project Type
+
+**Node.js / JavaScript**:
+```
+registry.npmjs.org, registry.yarnpkg.com
+```
+
+**Python**:
+```
+pypi.org, files.pythonhosted.org
+```
+
+**Rust**:
+```
+crates.io, static.crates.io, index.crates.io
+```
+
+**Cloud providers**:
+```
+api.digitalocean.com, storage.googleapis.com, s3.amazonaws.com
+```
+
+**Package CDNs**:
+```
+cdn.jsdelivr.net, unpkg.com, esm.sh
+```
+
+## Verification
+
+If you're getting network errors in shell commands, check:
+
+1. Does `sandbox-domains.txt` exist at workspace root?
+2. Are the required domains listed (comma-separated, single line)?
+3. Did you reload the workspace after adding it?
+
+## Gitignore
+
+This file should be in `.gitignore` — it's workspace-specific configuration, not project code. Each developer may need different domains based on their toolchain.
+
+Add to `.gitignore`:
+```
+sandbox-domains.txt
+```

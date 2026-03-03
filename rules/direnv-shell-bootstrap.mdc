@@ -1,0 +1,59 @@
+---
+description: Bootstrap direnv environment before running any shell commands in workspaces with .envrc
+alwaysApply: true
+---
+
+# direnv Shell Bootstrap
+
+**CRITICAL**: The Cursor Shell tool runs non-interactive shells. The
+`direnv hook zsh` from `.zshrc` does NOT fire. You MUST bootstrap the
+environment before running any command that needs Nix tools or `.env`
+variables.
+
+## Bootstrap One-Liner (cascading, fastest first)
+
+```bash
+[[ -n "$IN_NIX_SHELL" ]] || { source .direnv/cursor-env.zsh 2>/dev/null || eval "$(DIRENV_LOG_FORMAT= direnv export zsh)"; } && <your command>
+```
+
+1. Already loaded (`$IN_NIX_SHELL` set) — skip entirely (~0ms)
+2. Cached env file exists and fresh — `source` (~0ms)
+3. Cache stale/missing — falls back to `direnv export` (~1-4s)
+
+Run from the **workspace root** (where `.envrc` lives) — use
+`working_directory` on the Shell tool. The Shell tool is stateful — once
+loaded, subsequent calls inherit the env.
+
+## Generate the Cache
+
+Run the generate script from the workspace root (works for any project):
+
+```bash
+~/.cursor/skills/direnv-shell-commands/generate-cursor-env.sh
+```
+
+Pass `--minimal` for a smaller file (PATH + .env vars only). The output
+at `.direnv/cursor-env.zsh` self-validates via mtime checks — if `.envrc`,
+`flake.lock`, or `.env` is newer, it returns 1 and the bootstrap falls
+back to live `direnv export`.
+
+## When to Skip Entirely
+
+- `git`, `gh`, `ls`, `head`, `wc` — system tools, no flake env needed
+- File reads, searches, grep — Cursor tools, not shell
+- If you already bootstrapped in the same session (`$IN_NIX_SHELL` is set)
+
+## When to Request Permissions
+
+Use `required_permissions: ["all"]` on the Shell tool when:
+
+- `flake.nix` or `flake.lock` was just changed (Nix daemon must rebuild)
+- The bootstrap fails with Nix errors (daemon socket or network access)
+- First bootstrap after a fresh clone (no `.direnv/` cache yet)
+
+Normal development (warm cache) works fine in the default sandbox.
+
+## Full Details
+
+See `~/.cursor/skills/direnv-shell-commands/SKILL.md` for sandbox behavior,
+error recovery, command categories, and all three bootstrap tiers.

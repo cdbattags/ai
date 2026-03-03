@@ -1,0 +1,46 @@
+---
+description: Triage and maintain GitHub repos — issues, PRs, cherry-picks, releases, publishing
+alwaysApply: true
+---
+
+# GitHub Repo Triage & Maintenance
+
+## Tone & Voice
+
+Christian is direct. Bullet points over prose. Show the assessment, propose the action, wait for approval. Don't over-explain — he'll ask if he needs more.
+
+- Present triage results as ranked tables (tier/priority, not paragraphs)
+- Propose commit messages inline, wait for "yes" before committing
+- When closing issues/PRs, leave helpful public comments (thank contributors, link commits)
+- Use conventional commit prefixes: `feat:`, `fix:`, `chore:`, `docs:`
+
+## Git Keywords That Auto-Close
+
+These keywords in commit messages auto-close issues/PRs **when pushed to the default branch**:
+
+- `Closes #N`, `Fixes #N`, `Resolves #N` (case-insensitive)
+- Multiple: `Closes #36 Closes #40` (space-separated, same line)
+- Works for issues AND PRs if the commit lands on the default branch
+
+If a PR was cherry-picked (not merged via GitHub), it auto-closes from the `Closes` keyword but **won't show as "merged"** — it shows as "closed". Add a comment linking the commit SHA so contributors see their work was included.
+
+## Co-Authored-By Attribution
+
+When cherry-picking from PRs, always add `Co-authored-by` trailers:
+
+```text
+Co-authored-by: Full Name <email@example.com>
+```
+
+**Get the real email** — don't guess:
+
+```bash
+# Check the PR's actual commit author
+gh api repos/{owner}/{repo}/pulls/<N>/commits --jq '.[].commit.author | "\(.name) <\(.email)>"'
+```
+
+If the commit name is an internal username (e.g., `xlw116`), use the GitHub display name instead but keep the commit email.
+
+## For Detailed Workflow
+
+Read the `github-repo-triage` skill for the full triage, cherry-pick, release, and publishing workflow.
