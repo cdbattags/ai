@@ -1,13 +1,13 @@
 {
   "name": "@cdbattags/ai",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "User-level AI agent configuration: rules, skills, MCP profiles, and multi-tool deployment",
   "type": "module",
   "bin": {
-    "@cdbattags/ai": "link.ts",
-    "ai-config": "link.ts"
+    "ai-config": "bin/ai-config.mjs"
   },
   "files": [
+    "bin/",
     "link.ts",
     "src/",
     "dist/cdbattags/",
