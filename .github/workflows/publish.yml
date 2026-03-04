@@ -29,6 +29,18 @@ jobs:
 
       - run: node link.ts build
 
+      - name: Resolve dist/ symlinks to real files for npm tarball
+        run: |
+          find dist/cdbattags -type l | while read link; do
+            target=$(readlink -f "$link")
+            rm "$link"
+            if [ -d "$target" ]; then
+              cp -r "$target" "$link"
+            else
+              cp "$target" "$link"
+            fi
+          done
+
       - run: npx -p typescript tsc link.ts --module nodenext --moduleResolution nodenext --target esnext --outDir .
 
       - run: npm publish --access public
