@@ -1,6 +1,10 @@
 {
   "name": "@cdbattags/ai",
   "version": "1.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cdbattags/ai"
+  },
   "description": "User-level AI agent configuration: rules, skills, MCP profiles, and multi-tool deployment",
   "type": "module",
   "bin": {
