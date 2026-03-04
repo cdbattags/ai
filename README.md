@@ -119,7 +119,7 @@ node link.ts build
 
 ```
 Usage: node link.ts [command] [options]
-       npx ai-config [command] [options]
+       npx @cdbattags/ai [command] [options]
 
 Commands:
   build               Build dist/<name>/ from src/ + vendor
@@ -147,10 +147,10 @@ node link.ts install --name myname
 Install rules and skills into the current project instead of your home directory:
 
 ```bash
-npx ai-config install --workspace               # all tools
-npx ai-config install cursor --workspace         # cursor only
-npx ai-config install --workspace --dry-run      # preview
-npx ai-config install --workspace --clean        # remove
+npx @cdbattags/ai install --workspace               # all tools
+npx @cdbattags/ai install cursor --workspace         # cursor only
+npx @cdbattags/ai install --workspace --dry-run      # preview
+npx @cdbattags/ai install --workspace --clean        # remove
 ```
 
 This creates `.cursor/`, `.claude/`, `.opencode/` in `cwd` with symlinks back

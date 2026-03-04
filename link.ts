@@ -69,7 +69,7 @@ interface Options {
 
 const USAGE = `
 Usage: node link.ts [command] [options]
-       npx ai-config [command] [options]
+       npx @cdbattags/ai [command] [options]
 
 Commands:
   build               Build dist/<name>/ from src/ + vendor
