@@ -1,0 +1,6 @@
+sandbox-domains.txt
+worktrees/
+.direnv/
+.env
+.env.*
+.DS_Store
