@@ -5,5 +5,6 @@ worktrees/
 .env.*
 .DS_Store
 node_modules/
+link.js
 dist/*/
 !dist/cdbattags/

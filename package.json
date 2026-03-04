@@ -1,6 +1,6 @@
 {
   "name": "@cdbattags/ai",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/cdbattags/ai"
@@ -13,6 +13,7 @@
   "files": [
     "bin/",
     "link.ts",
+    "link.js",
     "src/",
     "dist/cdbattags/",
     "vendor.json",

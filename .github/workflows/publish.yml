@@ -29,4 +29,6 @@ jobs:
 
       - run: node link.ts build
 
+      - run: npx -p typescript tsc link.ts --module nodenext --moduleResolution nodenext --target esnext --outDir .
+
       - run: npm publish --access public
