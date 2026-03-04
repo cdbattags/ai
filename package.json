@@ -3,6 +3,24 @@
   "version": "1.0.0",
   "description": "User-level AI agent configuration: rules, skills, MCP profiles, and multi-tool deployment",
   "type": "module",
+  "bin": {
+    "@cdbattags/ai": "link.ts",
+    "ai-config": "link.ts"
+  },
+  "files": [
+    "link.ts",
+    "src/",
+    "dist/cdbattags/",
+    "vendor.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "node link.ts build",
     "install-all": "node link.ts install",

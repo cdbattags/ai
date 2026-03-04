@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S node --experimental-strip-types
 
 import { execSync } from "node:child_process";
 import {
@@ -26,11 +26,21 @@ const SRC = join(REPO_DIR, "src");
 const VENDOR = join(REPO_DIR, "vendor");
 const DEFAULT_NAME = "cdbattags";
 
-const INSTALL_TARGETS: Record<string, string> = {
-  cursor: join(HOME, ".cursor"),
-  claude: join(HOME, ".claude"),
-  opencode: join(HOME, ".config", "opencode"),
-};
+function installTargets(workspace: boolean): Record<string, string> {
+  if (workspace) {
+    const cwd = process.cwd();
+    return {
+      cursor: join(cwd, ".cursor"),
+      claude: join(cwd, ".claude"),
+      opencode: join(cwd, ".opencode"),
+    };
+  }
+  return {
+    cursor: join(HOME, ".cursor"),
+    claude: join(HOME, ".claude"),
+    opencode: join(HOME, ".config", "opencode"),
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -46,6 +56,7 @@ interface VendorConfig {
 interface Options {
   command: "build" | "install" | "all";
   name: string;
+  workspace: boolean;
   tools: string[];
   mcpProfile: string;
   dryRun: boolean;
@@ -58,6 +69,7 @@ interface Options {
 
 const USAGE = `
 Usage: node link.ts [command] [options]
+       npx @cdbattags/ai [command] [options]
 
 Commands:
   build               Build dist/<name>/ from src/ + vendor
@@ -67,8 +79,9 @@ Commands:
 Options:
   --name NAME         Output directory name under dist/ (default: ${DEFAULT_NAME})
   --mcp PROFILE       MCP profile to use (default: base)
+  --workspace         Install into cwd (.cursor/, .claude/) instead of ~/
   --dry-run           Show what would happen without doing it
-  --clean             Remove installed symlinks from ~/
+  --clean             Remove installed symlinks
   -h, --help          Show this help
 `.trim();
 
@@ -93,6 +106,8 @@ function isSymlink(path: string): boolean {
 }
 
 function ensureSubmodules(): void {
+  if (!existsSync(join(REPO_DIR, ".git"))) return;
+
   const markers = [
     join(VENDOR, "hutchic", ".gitignore"),
     join(VENDOR, "aussiegingersnap", "README.md"),
@@ -346,18 +361,21 @@ function build(name: string, mcpProfile: string, dryRun: boolean): void {
 function installTool(
   name: string,
   tool: string,
+  workspace: boolean,
   dryRun: boolean,
   clean: boolean,
 ): void {
   const dist = join(REPO_DIR, "dist", name);
   const src = join(dist, tool);
-  const dest = INSTALL_TARGETS[tool];
+  const targets = installTargets(workspace);
+  const dest = targets[tool];
   if (!dest) {
     console.error(`Unknown tool: ${tool}`);
     return;
   }
 
-  header(`Install ${tool} -> ${dest}/`);
+  const scope = workspace ? "workspace" : "user";
+  header(`Install ${tool} -> ${dest}/ (${scope})`);
 
   if (!existsSync(src)) {
     log(`SKIP (dist/${name}/${tool}/ not found; run build first)`);
@@ -414,11 +432,12 @@ function installDir(
 function install(
   name: string,
   tools: string[],
+  workspace: boolean,
   dryRun: boolean,
   clean: boolean,
 ): void {
   for (const tool of tools) {
-    installTool(name, tool, dryRun, clean);
+    installTool(name, tool, workspace, dryRun, clean);
   }
 }
 
@@ -430,6 +449,7 @@ function parseArgs(argv: string[]): Options {
   const opts: Options = {
     command: "all",
     name: DEFAULT_NAME,
+    workspace: false,
     tools: [],
     mcpProfile: "base",
     dryRun: false,
@@ -472,6 +492,9 @@ function parseArgs(argv: string[]): Options {
         }
         opts.mcpProfile = argv[i]!;
         break;
+      case "--workspace":
+        opts.workspace = true;
+        break;
       case "--dry-run":
         opts.dryRun = true;
         break;
@@ -508,11 +531,11 @@ function main(): void {
       build(opts.name, opts.mcpProfile, opts.dryRun);
       break;
     case "install":
-      install(opts.name, opts.tools, opts.dryRun, opts.clean);
+      install(opts.name, opts.tools, opts.workspace, opts.dryRun, opts.clean);
       break;
     case "all":
       build(opts.name, opts.mcpProfile, opts.dryRun);
-      install(opts.name, opts.tools, opts.dryRun, opts.clean);
+      install(opts.name, opts.tools, opts.workspace, opts.dryRun, opts.clean);
       break;
   }
 

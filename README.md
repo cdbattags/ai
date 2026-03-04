@@ -25,7 +25,7 @@ node link.ts --dry-run    # preview without changes
 **`link.ts`** has two phases:
 
 1. **build**: Wipe `dist/<name>/`, recreate symlinks from `src/` + vendor cherry-picks, generate `mcp.json` from profile
-2. **install**: Symlink `dist/<name>/` contents into `~/.cursor/`, `~/.claude/`, `~/.config/opencode/`
+2. **install**: Symlink `dist/<name>/` contents into `~/.cursor/`, `~/.claude/`, `~/.config/opencode/` (or into cwd with `--workspace`)
 
 ## Repository layout
 
@@ -119,6 +119,7 @@ node link.ts build
 
 ```
 Usage: node link.ts [command] [options]
+       npx @cdbattags/ai [command] [options]
 
 Commands:
   build               Build dist/<name>/ from src/ + vendor
@@ -128,8 +129,9 @@ Commands:
 Options:
   --name NAME         Output directory under dist/ (default: cdbattags)
   --mcp PROFILE       MCP profile to use (default: base)
+  --workspace         Install into cwd (.cursor/, .claude/) instead of ~/
   --dry-run           Show what would happen without doing it
-  --clean             Remove installed symlinks from ~/
+  --clean             Remove installed symlinks
   -h, --help          Show this help
 ```
 
@@ -139,6 +141,21 @@ Forkers can build their own dist (gitignored) without touching the tracked one:
 node link.ts build --name myname
 node link.ts install --name myname
 ```
+
+### Workspace install (npx)
+
+Install rules and skills into the current project instead of your home directory:
+
+```bash
+npx @cdbattags/ai install --workspace               # all tools
+npx @cdbattags/ai install cursor --workspace         # cursor only
+npx @cdbattags/ai install --workspace --dry-run      # preview
+npx @cdbattags/ai install --workspace --clean        # remove
+```
+
+This creates `.cursor/`, `.claude/`, `.opencode/` in `cwd` with symlinks back
+to the built dist. Useful for per-project overrides or sharing config across a
+team repo.
 
 ## License
 
