@@ -1,0 +1,6 @@
+{
+  "docker": {
+    "command": "npx",
+    "args": ["-y", "@quantgeekdev/docker-mcp"]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@cdbattags/ai",
+  "version": "1.0.0",
+  "description": "User-level AI agent configuration: rules, skills, MCP profiles, and multi-tool deployment",
+  "type": "module",
+  "scripts": {
+    "build": "node link.ts build",
+    "install-all": "node link.ts install",
+    "link": "node link.ts",
+    "check": "tsgo --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "@typescript/native-preview": "7.0.0-dev.20260304.1"
+  },
+  "license": "MIT"
+}

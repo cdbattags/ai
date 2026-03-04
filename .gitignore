@@ -4,3 +4,6 @@ worktrees/
 .env
 .env.*
 .DS_Store
+node_modules/
+dist/*/
+!dist/cdbattags/

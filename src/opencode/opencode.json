@@ -1,0 +1,5 @@
+{
+  "$schema": "https://opencode.ai/config.schema.json",
+  "logLevel": "INFO",
+  "autoupdate": "notify"
+}

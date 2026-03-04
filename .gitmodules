@@ -1,0 +1,6 @@
+[submodule "vendor/hutchic"]
+	path = vendor/hutchic
+	url = https://github.com/hutchic/.cursor.git
+[submodule "vendor/aussiegingersnap"]
+	path = vendor/aussiegingersnap
+	url = https://github.com/aussiegingersnap/cursor-skills.git

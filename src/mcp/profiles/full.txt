@@ -1,0 +1,8 @@
+context7
+github
+memory
+sequential-thinking
+fetch
+playwright
+docker
+sentry

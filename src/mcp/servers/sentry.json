@@ -1,0 +1,9 @@
+{
+  "sentry": {
+    "command": "npx",
+    "args": ["-y", "@sentry/mcp-server@latest"],
+    "env": {
+      "SENTRY_AUTH_TOKEN": ""
+    }
+  }
+}

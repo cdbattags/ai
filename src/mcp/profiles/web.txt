@@ -1,0 +1,5 @@
+context7
+memory
+sequential-thinking
+fetch
+playwright

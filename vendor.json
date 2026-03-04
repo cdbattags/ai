@@ -1,0 +1,9 @@
+{
+  "hutchic": {
+    "skills": {
+      "karpathy-guidelines": ".agents/skills/karpathy-guidelines",
+      "logging-best-practices": ".agents/skills/logging-best-practices",
+      "test-driven-development": ".agents/skills/test-driven-development"
+    }
+  }
+}
